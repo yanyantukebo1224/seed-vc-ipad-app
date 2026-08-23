@@ -13,6 +13,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
+    - name: Clone Seed-VC repository
+      run: |
+        echo "Cloning Seed-VC repository..."
+        git clone https://huggingface.co/plachta/seed-vc.git seed-vc
+        
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
@@ -26,11 +31,13 @@ jobs:
     - name: Test CoreML conversion (Whisper only)
       run: |
         echo "Testing Whisper model conversion..."
+        cd seed-vc
         python .github/workflows/test_converter.py
         
     - name: Convert full models
       run: |
         echo "Converting all models..."
+        cd seed-vc
         python .github/workflows/convert_to_coreml.py || echo "Full conversion may have errors, checking logs..."
         
     - name: Verify generated models
