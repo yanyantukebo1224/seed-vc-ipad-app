@@ -4,8 +4,8 @@
 Seed-VC CoreML Model Converter
 Converts PyTorch models to CoreML format for iOS deployment
 
-Usage:
-    python convert_to_coreml.py
+Usage in GitHub Actions:
+    python .github/workflows/convert_to_coreml.py
 
 Requirements:
     pip install torch torchaudio transformers coremltools munch audiotools dac huggingface_hub
@@ -86,8 +86,6 @@ def convert_whisper_to_coreml():
         
     except Exception as e:
         print(f"  ERROR converting Whisper model: {e}")
-        import traceback
-        traceback.print_exc()
 
 def convert_dit_to_coreml():
     """Convert DiT Voice Converter to CoreML"""
@@ -148,8 +146,6 @@ def convert_dit_to_coreml():
         
     except Exception as e:
         print(f"  ERROR converting DiT model: {e}")
-        import traceback
-        traceback.print_exc()
 
 def convert_vocoder_to_coreml():
     """Convert BigVGAN Vocoder to CoreML"""
@@ -183,8 +179,6 @@ def convert_vocoder_to_coreml():
         
     except Exception as e:
         print(f"  ERROR converting Vocoder model: {e}")
-        import traceback
-        traceback.print_exc()
 
 def main():
     """Main function"""
