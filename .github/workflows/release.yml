@@ -52,7 +52,7 @@ jobs:
         zip -r ../../CoreMLModels.zip *.mlmodel
         
     - name: Upload Release Assets
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v3
       with:
         files: |
           Build/Products/Release-iphoneos/VoiceConverterApp.zip
