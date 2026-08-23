@@ -13,11 +13,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Clone Seed-VC repository
-      run: |
-        echo "Cloning Seed-VC repository..."
-        git clone https://huggingface.co/plachta/seed-vc.git seed-vc
-        
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
@@ -31,39 +26,31 @@ jobs:
     - name: Test CoreML conversion (Whisper only)
       run: |
         echo "Testing Whisper model conversion..."
-        cd seed-vc
         python .github/workflows/test_converter.py
         
     - name: Convert full models
       run: |
         echo "Converting all models..."
-        cd seed-vc
         python .github/workflows/convert_to_coreml.py || echo "Full conversion may have errors, checking logs..."
         
     - name: Verify generated models
       run: |
         echo "Checking generated models..."
         ls -lh SeedVC/CoreMLModels/ 2>/dev/null || echo "No models found"
-        du -sh SeedVC/CoreMLModels/* 2>/dev/null || echo "Size check failed"
         
     - name: Build iOS App
       run: |
         echo "Building Xcode project..."
         xcodeproj create VoiceConverterApp --language Swift
         
-        # Add CoreML models to app bundle
         mkdir -p VoiceConverterApp.app/Contents/Resources
         if [ -d "SeedVC/CoreMLModels" ] && [ "$(ls -A SeedVC/CoreMLModels 2>/dev/null)" ]; then
           cp -r SeedVC/CoreMLModels/* VoiceConverterApp.app/Contents/Resources/
-          echo "CoreML models copied successfully"
-        else
-          echo "Warning: No CoreML models found to copy"
         fi
         
-        # Build the app
         xcodebuild -scheme VoiceConverterApp \
           -destination 'platform=iOS Simulator,name=iPad Pro (12.9-inch) (4th generation)' \
-          build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO || echo "Build failed, check logs"
+          build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO || echo "Build failed"
         
     - name: Upload artifact
       uses: actions/upload-artifact@v4
