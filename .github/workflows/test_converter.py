@@ -12,6 +12,7 @@ os.environ["HF_HUB_CACHE"] = str(cache_dir)
 print("=" * 60)
 print("Seed-VC CoreML Converter (Test)")
 print("=" * 60)
+print(f"PyTorch version: {torch.__version__}")
 
 from transformers import WhisperModel
 
@@ -26,10 +27,13 @@ try:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     
     print("  Converting to CoreML...")
-    mlmodel = ct_convert(model, inputs=[torch.TensorType(shape=(1, 80, 1500))])
+    # Use classifier_inputs instead of inputs for Whisper
+    mlmodel = ct_convert(model, inputs=[torch.TensorType(shape=(1, None))])
     mlmodel.save(str(OUTPUT_DIR / "WhisperFeatureExtractor.mlmodel"))
     print(f"  OK: {OUTPUT_DIR}/WhisperFeatureExtractor.mlmodel")
 except Exception as e:
     print(f"  ERROR: {e}")
+    import traceback
+    traceback.print_exc()
 
 print("\nDone!")
