@@ -4,11 +4,8 @@
 Seed-VC CoreML Model Converter
 Converts PyTorch models to CoreML format for iOS deployment
 
-Usage in GitHub Actions:
-    python .github/workflows/convert_to_coreml.py
-
 Requirements:
-    pip install torch torchaudio transformers coremltools munch audiotools dac huggingface_hub
+    pip install torch torchaudio transformers coremltools munch huggingface_hub
 """
 
 import os

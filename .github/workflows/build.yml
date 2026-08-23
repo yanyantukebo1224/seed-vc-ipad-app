@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install torch torchaudio transformers coremltools munch audiotools dac huggingface_hub
+        pip install torch torchaudio transformers coremltools munch huggingface_hub
         
     - name: Test CoreML conversion (Whisper only)
       run: |
